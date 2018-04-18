@@ -1,4 +1,4 @@
-# TinyApp Url Shortener
+# TinyApp URL Shortener
 
 ## Problem Statement
 

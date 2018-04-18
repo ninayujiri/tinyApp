@@ -8,7 +8,11 @@
     <% include ./partials/_header %>
   </header>
 
-  <p><%= shortURL %>: <a href='<%= longURL %>'><%= longURL %></a></p>
+  <h2 style = "font-family: sans-serif; font-weight: 300;">Short URL:  <%= shortURL %></h2>
+  <form action="/urls/<%= shortURL %>" method="POST">
+      <input id="longURL" type="text" name="longURL" value="<%= longURL %>" style="width: 250px;">
+      <input type="submit" value="Update">
+  </form>
 
 </body>
 </html>

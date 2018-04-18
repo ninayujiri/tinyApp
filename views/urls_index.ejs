@@ -10,11 +10,14 @@
 <p>
   <ul>
       <% for(var key in urls) { %>
-      <li><%= key %>: <%= urls[key] %></li>
+      <li>
+      <%= key %>: <%= urls[key] %>
+      <form method="POST" action="/urls/<%= key %>/delete"><input style = "padding: 10px" type="submit" value="Delete"></form><a href="/urls/<%= key %>">Edit</a>
+      </li>
       <% } %>
   </ul>
 </p>
-<p>
+<p style = "font-family: sans-serif; font-weight: 300;">
   <a href = "urls/new">Shorten a new URL</a>
 </p>
 

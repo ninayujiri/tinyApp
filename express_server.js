@@ -11,11 +11,13 @@ function generateRandomString() {
   return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
 };
 
+// database
 var urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
 
+// homepage
 app.get("/", (req, res) => {
   res.end("Hello!");
 });
@@ -31,21 +33,12 @@ app.get("/urls", (req, res) => {
 
 app.post("/urls", (req, res) => {
   var randomString = generateRandomString();
-  urlDatabase[randomString] = req.body["longURL"];
-  res.redirect("http://localhost:8080/urls/" + randomString);
+  urlDatabase[randomString] = req.body.longURL;
+  res.redirect("/urls/" + randomString);
 });
 
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
-});
-
-app.get("/urls/:id", (req, res) => {
-  let templateVars = { shortURL: req.params.id, longURL: urlDatabase[req.params.id] || "not found" };
-  res.render("urls_show", templateVars);
-});
-
-app.get("/hello", (req, res) => {
-  res.end("<html><body>Hello <b>World</b></body></html>\n");
 });
 
 app.get("/u/:shortURL", (req, res) => {
@@ -53,13 +46,24 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
+app.get("/urls/:id", (req, res) => {
+  let templateVars = { shortURL: req.params.id, longURL: urlDatabase[req.params.id] || "not found" };
+  res.render("urls_show", templateVars);
+});
+
+app.post("/urls/:id", (req, res) => {
+  let shortURL = req.params.id;
+  urlDatabase[shortURL] = req.body.longURL;
+  res.redirect("/urls");
+});
+
+app.post("/urls/:id/delete", (req, res) => {
+  let shortURL = req.params.id;
+  delete urlDatabase[shortURL];
+  res.redirect("/urls");
+});
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
-
-
-
-//What would happen if a client requests a non-existent shortURL?
-//What happens to the urlDatabase when the server is restarted?
-//Should your redirects be 301 or 302 - What is the difference?
 
