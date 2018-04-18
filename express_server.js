@@ -1,11 +1,12 @@
 var express = require("express");
 var app = express();
+var cookieParser = require('cookie-parser')
+const bodyParser = require("body-parser");
 var PORT = process.env.PORT || 8080;
 
-const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({extended: true}));
-
 app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser())
 
 function generateRandomString() {
   return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
