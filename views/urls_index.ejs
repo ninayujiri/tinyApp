@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+</head>
+<body>
+<header>
+    <% include ./partials/_header %>
+</header>
+<p>
+  <ul>
+      <% for(var key in urls) { %>
+      <li><%= key %>: <%= urls[key] %></li>
+      <% } %>
+  </ul>
+</p>
+<p>
+  <a href = "urls/new">Shorten a new URL</a>
+</p>
+
+</body>
+</html>
