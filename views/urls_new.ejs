@@ -4,11 +4,19 @@
   <head>
   </head>
   <body style="font-size:20px; padding:50px;">
+
+  <header>
+    <a href = "/urls">
+    <h2 style="color: blue; font-family: sans-serif; font-weight: 300;">TinyApp</h2>
+    </a>
     <% include partials/_header %>
+  </header>
+
     <form action="/urls" method="POST" style="margin:150px;">
       <label for="longURL"><h3 style = "font-family:sans-serif; font-weight: 300;">Enter a URL:</h3></label>
       <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
       <input type="submit" value="Submit">
     </form>
+
   </body>
 </html>

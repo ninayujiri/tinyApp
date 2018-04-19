@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>TinyApp</title>
-</head>
-<body>
-    <a href = "/urls">
-        <h2 style="color: blue; font-family: sans-serif; font-weight: 300;">
-            TinyApp
-        </h2>
-    </a>
+
   <%= username %>
+
   <% if(!username) { %>
   <form action="/login" method="POST">
      <input id="username" type="text" name="username" placeholder="Username" style="width: 150px;">
@@ -20,7 +11,6 @@
       <input type="submit" value="Logout">
   </form>
   <% } %>
-  <br><br>
 
-</body>
-</html>
+  <br>
+  <br>
