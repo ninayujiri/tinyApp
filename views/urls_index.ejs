@@ -10,22 +10,32 @@
   </a>
     <% include ./partials/_header %>
 </header>
-<p><div>
-  <ul style="list-style-type:none;">
-      <% for(var key in urls) { %>
+
+  <% if (user === undefined) { %>
+    <p>Please <a href = "/login">login</a> or <a href = "/register">register</a></p>
+  <% } else { %>
+
+  <% for(var key in urls) { %>
+    <% if (user.id === urls[key].createdBy) { %>
+
+      <ul style="list-style-type:none;">
       <li>
-        <%= key %>: <%= urls[key] %>
+        <%= key %>: <a href = "<%= urls[key].longURL %>"><%= urls[key].longURL %></a>
           <form method="POST" action="/urls/<%= key %>/delete">
             <input style = "padding: 10px" type="submit" value="Delete">
           </form>
         <a href="/urls/<%= key %>"><button type ="submit">Edit</button></a>
       </li>
-      <% } %>
-  </ul>
-</p></div>
-<p style = "font-family: sans-serif; font-weight: 300;">
+      </ul>
+
+    <% } %>
+  <% } %>
+<% } %>
+
+
+  <p style = "font-family: sans-serif; font-weight: 300;">
   <a href = "urls/new">Shorten a new URL</a>
-</p>
+  </p>
 
 </body>
 </html>

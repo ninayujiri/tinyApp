@@ -1,11 +1,24 @@
-<a href = "/login"><button type ="submit">Login</button></a>
-<a href = "/register"><button type ="submit">Register</button></a>
-<form action="/logout" method="POST"><input type="submit" value="Logout"></form>
+<!-- if user is logged in -->
+<% if (user !== undefined) { %>
+  <p>Hello, <%= user.email %></p>
+  <form action="/logout" method="POST">
+    <input type="submit" value="Logout">
+  </form>
+<% } else { %>
+<!-- if user not logged in -->
+  <a href = "/login"><button type ="submit">Login</button></a>
+  <a href = "/register"><button type ="submit">Register</button></a>
+<% } %>
 
+<!-- divider line -->
 <br>
 
 <div style="margin-left:-8px;margin-right:-8px"><hr style="color:Black;background-color:Black;border:0;width:100%;height:1px;" /></div>
 
 <br>
+
+
+
+
 
 

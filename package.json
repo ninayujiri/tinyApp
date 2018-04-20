@@ -4,12 +4,16 @@
   "description": "a full stack web app built with Node and Express that allows users to shorten long URLs",
   "main": "express_server.js",
   "dependencies": {
+    "bcrypt": "^2.0.0",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
+    "cookie-session": "^2.0.0-beta.3",
     "ejs": "^2.5.8",
     "express": "^4.16.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
