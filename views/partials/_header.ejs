@@ -1,20 +1,23 @@
-<!-- if user is logged in -->
+<!-- If user is logged in: Greeting + Logout button -->
+
 <% if (user !== undefined) { %>
   <p>Hello, <%= user.email %></p>
   <form action="/logout" method="POST">
     <input type="submit" value="Logout">
   </form>
 <% } else { %>
-<!-- if user not logged in -->
+
+<!-- If user not logged in: Login + Register buttons -->
+
   <a href = "/login"><button type ="submit">Login</button></a>
   <a href = "/register"><button type ="submit">Register</button></a>
 <% } %>
 
 <!-- divider line -->
+
 <br>
-
-<div style="margin-left:-8px;margin-right:-8px"><hr style="color:Black;background-color:Black;border:0;width:100%;height:1px;" /></div>
-
+  <div style="margin-left:-8px;margin-right:-8px"><hr style="color:Black;background-color:Black;border:0;width:100%;height:1px;" />
+  </div>
 <br>
 
 

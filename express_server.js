@@ -1,3 +1,4 @@
+// Dependencies
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -6,15 +7,18 @@ app.set("view engine", "ejs");
 
 
 // Middleware
+// - Cookie encryption
 const cookieSession = require('cookie-session');
 app.use(cookieSession({
   name: 'session',
   keys: ['key1', 'key2']
 }));
 
+// - JSON body parser
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
+// Encrypts passwords
 const bcrypt = require('bcrypt');
 
 
@@ -38,6 +42,7 @@ function findUser(email) {
 
 
 // Databases
+// - URL Database
 const urlDatabase = {
   "b2xVn2": {
     longURL: "http://www.lighthouselabs.ca",
@@ -47,7 +52,7 @@ const urlDatabase = {
     createdBy: 'user2RandomID'}
 };
 
-
+// - User Database
 const users = {
   "userRandomID": {
     id: "userRandomID",
@@ -150,9 +155,9 @@ app.post("/urls", (req, res) => {
 
 // Create a new URL
 app.get("/urls/new", (req, res) => {
+  const userId = req.session.user_id;
   const templateVars = { user: users[userId], urls: urlDatabase };
   let currentUser = req.session.user_id;
-
   if (!currentUser) {
     res.redirect("/login");
   } else {

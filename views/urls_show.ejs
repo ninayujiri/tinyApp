@@ -11,6 +11,8 @@
     <% include ./partials/_header %>
   </header>
 
+<!-- Displays short URL and a form to edit the long URL -->
+
   <h2 style = "font-family: sans-serif; font-weight: 300;">Short URL:  <a href = "<%= longURL %>"><%= shortURL %></a></h2>
   <form action="/urls/<%= shortURL %>" method="POST">
       <input id="longURL" type="text" name="longURL" value="<%= longURL %>" style="width: 250px;">
