@@ -28,17 +28,31 @@ function generateRandomString() {
 };
 
 function findUser(email) {
-  for (let userID in users) {
-    if (email === users[userID].email) {
-      return users[userID];
+  for (let user in users) {
+    if (email === users[user].email) {
+      return users[user];
     }
   }
   return false;
 };
 
-// function urlsForUser(id) {
+function userChecker(currentUser) {
+  for (let user in users) {
+    if (user === currentUser) {
+      return true;
+    }
+  } return false;
+};
 
-// };
+function registerChecker(email, password) {
+if (password === undefined) {
+    for (id in users) {
+      if (users[id].email === email){
+        return true;
+      }
+    } return false;
+  }
+};
 
 
 // Databases
@@ -63,13 +77,21 @@ const users = {
     id: "user2RandomID",
     email: "user2@example.com",
     password: "dishwasher-funk"
+  },
+   "123456": {
+    id: "123456",
+    email: "nina@nina.com",
+    password: "nina"
   }
 };
 
 
 // Root Page
 app.get("/", (req, res) => {
-  res.end("Hello!");
+  let currentUser = req.session.user_id;
+  if (currentUser) {
+  res.redirect("/urls");
+  }
 });
 
 
@@ -79,31 +101,22 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  const id = generateRandomString();
   const inputEmail = req.body.email;
   const inputPassword = req.body.password;
-  const hashedPassword = bcrypt.hashSync(inputPassword, 10);
-  let emailFound = false;
 
   if (inputEmail === "" && inputPassword === "") {
     res.status(400).send('Please enter an email and password');
   } else if (inputPassword === "" || inputEmail === "") {
     res.status(400).send('Please enter both a username and password');
+  } else if (registerChecker(req.body.email)) {
+    res.status(400).send('Email has already been taken');
   } else {
-    for (let userId in users) {
-      if (inputEmail === users[userId].email) {
-        emailFound = true;
-      }
-    }
-    if (emailFound === true) {
-      res.status(400).send('Email has already been taken');
-    } else {
-      users[id] = { id: id, email: req.body.email, password: hashedPassword };
-      req.session.user_id = users[id].id;
-      res.redirect("/urls");
-    }
+    const id = generateRandomString();
+    const hashedPassword = bcrypt.hashSync(inputPassword, 10);
+    users[id] = { id: id, email: req.body.email, password: hashedPassword };
+    req.session.user_id = users[id].id;
+    res.redirect("/urls");
   }
-  // console.log("users: ", users);
 });
 
 
@@ -115,19 +128,20 @@ app.get("/login", (req, res) => {
 app.post("/login", (req, res) => {
   const inputEmail = req.body.email;
   const inputPassword = req.body.password;
-  let userFound = findUser(inputEmail);
   const hashedPassword = bcrypt.hashSync(inputPassword, 10);
+  let userFound = findUser(inputEmail);
 
   if (inputEmail === null || inputPassword === null) {
     res.status(400).send('Please fill in both email and password fields. <a href = "/login">Try again.</a>');
   }
-
-  if (userFound && bcrypt.compareSync(inputPassword, hashedPassword)) {
+  for (user in users) {
+    if (userFound && bcrypt.compareSync(inputPassword, hashedPassword)) {
     req.session.user_id = userFound.id;
-    res.redirect("/");
-  } else {
-    res.status(400).send('Incorrect credentials. <a href = "/login">Please try again.</a>');
+    res.redirect("/urls");
+    return;
+    }
   }
+  res.status(400).send('Incorrect credentials. <a href = "/login">Please try again.</a>');
 });
 
 
@@ -140,16 +154,30 @@ app.post("/logout", (req, res) => {
 
 // URL Index
 app.get("/urls", (req, res) => {
-  const userId = req.session.user_id;
+  let userId = req.session.user_id;
   const templateVars = { user: users[userId], urls: urlDatabase };
-  res.render("urls_index", templateVars);
+  if (userChecker(userId)) {
+    let userURLs = {};
+    for (let url in urlDatabase) {
+      if (urlDatabase[url].createdBy === req.session.user_id){
+        userURLs[url] = urlDatabase[url];
+      }
+    }
+    res.render("urls_index", templateVars);
+  } else {
+    res.status(401).send('Please <a href = "/login">login</a> or <a href = "/register">register.</a>');
+  }
 });
 
 app.post("/urls", (req, res) => {
-  let randomString = generateRandomString();
   let userId = req.session.user_id;
-  urlDatabase[randomString] = { longURL: req.body.longURL, createdBy: userId };
-  res.redirect("/urls/" + randomString);
+  if (userChecker(userId)) {
+    let randomString = generateRandomString();
+    urlDatabase[randomString] = { longURL: req.body.longURL, createdBy: userId };
+    res.redirect("/urls/" + randomString);
+  } else {
+    res.status(401).send('Please <a href = "/login">login</a> or <a href = "/register">register.</a>');
+  }
 });
 
 

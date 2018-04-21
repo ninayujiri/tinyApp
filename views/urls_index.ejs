@@ -11,8 +11,6 @@
   <% include ./partials/_header %>
 </header>
 
-  <!-- This checks if the user has an existing account -->
-
   <% if (user === undefined) { %>
     <p>Please <a href = "/login">login</a></p>
   <% } %>
@@ -21,7 +19,6 @@
 
   <% for(var key in urls) { %>
     <% if (user.id === urls[key].createdBy) { %>
-
     <ul style="list-style-type:none;">
     <li>
       <%= key %>: <a href = "<%= urls[key].longURL %>"><%= urls[key].longURL %></a>
@@ -32,17 +29,15 @@
     </li>
     </ul>
     <% } else { %>
-
   <!-- If user is not the owner of the URL, no edit or delete buttons -->
-
     <ul style="list-style-type:none;">
       <li>
         <%= key %>: <a href = "<%= urls[key].longURL %>"><%= urls[key].longURL %></a>
       </li>
     </ul>
-
     <% } %>
   <% } %>
+
 
   <br>
   <p style = "font-family: sans-serif; font-weight: 300;">
