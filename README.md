@@ -1,4 +1,4 @@
-# TinyApp Project :shipit:
+# TinyApp Project
 
 ## Problem Statement
 
@@ -12,7 +12,7 @@ A full stack web app built with Node and Express that allows users to shorten lo
 - Node.js
 - Express
 - EJS
-- bycrypt
+- bycrypt :shipit:
 - body-parser
 - cookie-session
 
