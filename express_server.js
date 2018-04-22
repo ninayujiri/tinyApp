@@ -128,8 +128,6 @@ app.post("/register", (req, res) => {
     users[id] = { id: id, email: req.body.email, password: hashedPassword };
     req.session.user_id = users[id].id;
     res.redirect("/urls");
-
-    console.log(hashedPassword);
   }
 });
 
