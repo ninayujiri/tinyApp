@@ -128,6 +128,8 @@ app.post("/register", (req, res) => {
     users[id] = { id: id, email: req.body.email, password: hashedPassword };
     req.session.user_id = users[id].id;
     res.redirect("/urls");
+
+    console.log(hashedPassword);
   }
 });
 
@@ -145,14 +147,13 @@ app.get("/login", (req, res) => {
 app.post("/login", (req, res) => {
   const inputEmail = req.body.email;
   const inputPassword = req.body.password;
-  const hashedPassword = bcrypt.hashSync(inputPassword, 10);
   const userFound = findUser(inputEmail);
   const userPassword = userFound.password;
 
   if (!inputEmail || !inputPassword) {
     res.status(400).send('Please fill in both email and password fields. <a href = "/login">Try again.</a>');
   } else {
-      if (userFound && bcrypt.compareSync(userPassword, hashedPassword)) {
+      if (userFound && bcrypt.compareSync(inputPassword, userPassword)) {
         req.session.user_id = userFound.id;
         res.redirect("/urls");
       } else {
