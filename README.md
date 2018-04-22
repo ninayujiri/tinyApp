@@ -4,6 +4,17 @@
 
 A full stack web app built with Node and Express that allows users to shorten long URLs (à la bit.ly).
 
+## User Stories
+
+As an avid twitter poster,
+I want to be able to shorten links
+so that I can fit more non-link text in my tweets.
+
+As a twitter reader,
+I want to be able to visit sites via shortened links,
+so that I can read interesting content.
+
+
 ## Final Product
 
 !["Screenshot of Login page"](https://github.com/ninayujiri/tinyApp/blob/master/docs/login-page.png?raw=true)
@@ -18,7 +29,7 @@ A full stack web app built with Node and Express that allows users to shorten lo
 - EJS
 - bycrypt :shipit:
 - body-parser
-- cookie-session
+- cookie-session :cookie:
 
 ## Getting Started
 
