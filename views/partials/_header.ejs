@@ -1,16 +1,20 @@
 <!-- If user is logged in: Greeting + Logout button -->
 
 <% if (user !== undefined) { %>
-  <p>Hello, <%= user.email %></p>
+<center>
+  <h4 style = "font-family: Courier New; font-weight: 500;">Hello, <%= user.email %></h4>
   <form action="/logout" method="POST">
     <input type="submit" value="Logout">
   </form>
+</center>
 <% } else { %>
 
 <!-- If user not logged in: Login + Register buttons -->
-
+<center>
   <a href = "/login"><button type ="submit">Login</button></a>
   <a href = "/register"><button type ="submit">Register</button></a>
+</center>
+
 <% } %>
 
 <!-- divider line -->

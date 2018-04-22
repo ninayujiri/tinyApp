@@ -3,14 +3,16 @@
 <html lang="en">
 <head>
 </head>
-<body>
+<body style="background-color: #f9f9f9;"">
 <header>
+<center>
   <a href = "/urls">
-    <h2 style="color: blue; font-family: sans-serif; font-weight: 300;">TinyApp</h2>
+    <h2 style="font-family: sans-serif; font-weight: 300;">TinyApp</h2>
   </a>
   <% include ./partials/_header %>
+</center>
 </header>
-
+<div style = "padding-left: 200px">
   <% if (user === undefined) { %>
     <p>Please <a href = "/login">login</a></p>
   <% } %>
@@ -19,7 +21,7 @@
 
   <% for(var key in urls) { %>
     <% if (user.id === urls[key].createdBy) { %>
-    <ul style="list-style-type:none;">
+    <ul style="list-style-type:none; padding-right: 60px; font-family: sans-serif; font-weight: 300;">
     <li>
       <%= key %>: <a href = "<%= urls[key].longURL %>"><%= urls[key].longURL %></a>
         <form method="POST" action="/urls/<%= key %>/delete">
@@ -29,8 +31,10 @@
     </li>
     </ul>
     <% } else { %>
+
   <!-- If user is not the owner of the URL, no edit or delete buttons -->
-    <ul style="list-style-type:none;">
+
+    <ul style="list-style-type:none; font-family: sans-serif; font-weight: 300;">
       <li>
         <%= key %>: <a href = "<%= urls[key].longURL %>"><%= urls[key].longURL %></a>
       </li>
@@ -41,8 +45,8 @@
 
   <br>
   <p style = "font-family: sans-serif; font-weight: 300;">
-  <a href = "/urls/new">Shorten a new URL</a>
+  <button style = "margin-left: 35px;"><a href = "/urls/new">Shorten a new URL</a></button>
   </p>
-
+</div>
 </body>
 </html>

@@ -6,19 +6,21 @@
   <body style="font-size:20px; padding:50px;">
 
   <header>
+  <center>
     <a href = "/urls">
-      <h2 style="color: #f45c42; font-family: sans-serif; font-weight: 300;">TinyApp</h2>
+      <h3 style="font-family: sans-serif; font-weight: 300;">TinyApp</h3>
     </a>
+  </center>
   <% include partials/_header %>
   </header>
 
 <!-- Displays a form where someone can input a new long URL + submit -->
-
-    <form action="/urls" method="POST" style="margin:150px;">
+  <center>
+    <form action="/urls" method="POST" style="margin:100px;">
       <label for="longURL"><h3 style = "font-family:sans-serif; font-weight: 300;">Enter a URL:</h3></label>
       <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
       <input type="submit" value="Submit">
     </form>
-
-  </body>
+  </center>
+</body>
 </html>

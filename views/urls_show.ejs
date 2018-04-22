@@ -3,21 +3,25 @@
 <html lang="en">
 <head>
 </head>
-<body>
+  <body style="padding:50px;">
   <header>
-    <a href = "/urls">
-      <h2 style="color: blue; font-family: sans-serif; font-weight: 300;">TinyApp</h2>
-    </a>
+    <center>
+      <a href = "/urls">
+        <h2 style="font-family: sans-serif; font-weight: 300;">TinyApp</h2>
+      </a>
+    </center>
     <% include ./partials/_header %>
   </header>
 
 <!-- Displays short URL and a form to edit the long URL -->
-
+  <center>
   <h2 style = "font-family: sans-serif; font-weight: 300;">Short URL:  <a href = "<%= longURL %>"><%= shortURL %></a></h2>
+  <h4 style = "font-family: sans-serif; font-weight: 300;">Full link:  <a href = "<%= longURL %>">http://localhost:8080/u/<%= shortURL %></a></h4>
   <form action="/urls/<%= shortURL %>" method="POST">
       <input id="longURL" type="text" name="longURL" value="<%= longURL %>" style="width: 250px;">
       <input type="submit" value="Update">
   </form>
+  </center>
 
 </body>
 </html>

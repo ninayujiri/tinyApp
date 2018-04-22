@@ -6,15 +6,15 @@ const PORT = process.env.PORT || 8080;
 app.set("view engine", "ejs");
 
 
-// Middleware
-// - Cookie encryption
+// Middleware:
+// Cookie encryption
 const cookieSession = require('cookie-session');
 app.use(cookieSession({
   name: 'session',
   keys: ['key1', 'key2']
 }));
 
-// - JSON body parser
+// Parses to a JSON file
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -22,13 +22,15 @@ app.use(bodyParser.urlencoded({extended: true}));
 const bcrypt = require('bcrypt');
 
 
-// Functions
+// Global Functions:
+// Generates a Random String
 function generateRandomString() {
   return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
 };
 
+// Checks if the user exists in the Database
 function findUser(email) {
-  for (let user in users) {
+  for (const user in users) {
     if (email === users[user].email) {
       return users[user];
     }
@@ -36,27 +38,19 @@ function findUser(email) {
   return false;
 };
 
+// Checks if the current user matches the cookie
 function userChecker(currentUser) {
-  for (let user in users) {
+  for (const user in users) {
     if (user === currentUser) {
       return true;
     }
   } return false;
 };
 
-function registerChecker(email, password) {
-  if (password === undefined) {
-    for (id in users) {
-      if (users[id].email === email) {
-        return true;
-      }
-    } return false;
-  }
-};
-
+// Checks if the the URL is in the Database
 function urlChecker(shortURL) {
   const arrShortUrl = Object.keys(urlDatabase);
-  for (let url in arrShortUrl) {
+  for (const url in arrShortUrl) {
     if (shortURL === arrShortUrl[url]) {
       return arrShortUrl[url];
     }
@@ -65,8 +59,8 @@ function urlChecker(shortURL) {
 
 
 
-// Databases
-// - URL Database
+// Databases:
+// URL Database
 const urlDatabase = {
   "b2xVn2": {
     longURL: "http://www.lighthouselabs.ca",
@@ -76,7 +70,7 @@ const urlDatabase = {
     createdBy: 'user2RandomID'}
 };
 
-// - User Database
+// User Database
 const users = {
   "userRandomID": {
     id: "userRandomID",
@@ -98,7 +92,7 @@ const users = {
 
 // Root Page
 app.get("/", (req, res) => {
-  let currentUser = req.session.user_id;
+  const currentUser = req.session.user_id;
   if (!currentUser) {
     res.render('home');
   } else {
@@ -109,7 +103,12 @@ app.get("/", (req, res) => {
 
 // Registration Page
 app.get("/register", (req, res) => {
-  res.render("register");
+  const currentUser = req.session.user_id;
+  if (currentUser) {
+    res.redirect("/urls");
+  } else {
+    res.render("register");
+  }
 });
 
 app.post("/register", (req, res) => {
@@ -120,7 +119,7 @@ app.post("/register", (req, res) => {
     res.status(400).send('Please enter an email and password');
   } else if (inputPassword === "" || inputEmail === "") {
     res.status(400).send('Please enter both a username and password');
-  } else if (registerChecker(req.body.email)) {
+  } else if (findUser(req.body.email)) {
     res.status(400).send('Email has already been taken');
   } else {
     const id = generateRandomString();
@@ -135,14 +134,19 @@ app.post("/register", (req, res) => {
 
 // Login Page
 app.get("/login", (req, res) => {
-  res.render("login");
+  const currentUser = req.session.user_id;
+  if (currentUser) {
+    res.redirect("/urls");
+  } else {
+    res.render("login");
+  }
 });
 
 app.post("/login", (req, res) => {
   const inputEmail = req.body.email;
   const inputPassword = req.body.password;
   const hashedPassword = bcrypt.hashSync(inputPassword, 10);
-  let userFound = findUser(inputEmail);
+  const userFound = findUser(inputEmail);
   const userPassword = userFound.password;
 
   if (!inputEmail || !inputPassword) {
@@ -167,11 +171,11 @@ app.post("/logout", (req, res) => {
 
 // URL Index
 app.get("/urls", (req, res) => {
-  let userId = req.session.user_id;
+  const userId = req.session.user_id;
   const templateVars = { user: users[userId], urls: urlDatabase };
   if (userChecker(userId)) {
     let userURLs = {};
-    for (let url in urlDatabase) {
+    for (const url in urlDatabase) {
       if (urlDatabase[url].createdBy === req.session.user_id){
         userURLs[url] = urlDatabase[url];
       }
@@ -206,9 +210,15 @@ app.get("/urls/new", (req, res) => {
 // Show URL
 app.get("/u/:shortURL", (req, res) => {
   const userId = req.session.user_id;
-  const templateVars = { user: users[userId], urls: urlDatabase };
-  let longURL = urlDatabase[req.params.shortURL];
-  res.redirect(longURL);
+  const shortURL = req.params.shortURL;
+  const urlFound = urlChecker(shortURL);
+
+  if (urlFound === false) {
+    res.status(404).send('This URL does not exist');
+  } else {
+    const longURL = urlDatabase[shortURL].longURL;
+    res.redirect(longURL);
+  }
 });
 
 
@@ -216,7 +226,7 @@ app.get("/u/:shortURL", (req, res) => {
 app.get("/urls/:id", (req, res) => {
   const shortURL = req.params.id;
   const userId = req.session.user_id;
-  let urlFound = urlChecker(shortURL);
+  const urlFound = urlChecker(shortURL);
 
   if (urlFound === false) {
     res.status(404).send('This URL does not exist');
